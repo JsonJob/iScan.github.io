@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset=utf-8 />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Record</title>
+
+  <style>
+
+    body {
+      width: 600px;
+      margin: 40px auto;
+      font-family: 'trebuchet MS', 'Lucida sans', Arial;
+      font-size: 14px;
+      color: #444;
+    }
+
+    table {
+      *border-collapse: collapse; /* IE7 and lower */
+      border-spacing: 0;
+      width: 100%;
+      mdl-layout__content: mdl-color--grey-100;
+      right: 10px;
+      top: 0px;
+      position: relative;
+    }
+
+    /*----------------------*/
+    .zebra td, .zebra th {
+      padding: 10px;
+      border-bottom: 1px solid #f2f2f2;
+    }
+
+    .zebra tbody tr:nth-child(even) {
+      background: #f5f5f5;
+      -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+      -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+      box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+    }
+
+    .zebra th {
+      text-align: left;
+      text-shadow: 0 1px 0 rgba(255,255,255,.5);
+      border-bottom: 1px solid #ccc;
+      background-color: #eee;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#eee));
+      background-image: -webkit-linear-gradient(top, #f5f5f5, #eee);
+      background-image:    -moz-linear-gradient(top, #f5f5f5, #eee);
+      background-image:     -ms-linear-gradient(top, #f5f5f5, #eee);
+      background-image:      -o-linear-gradient(top, #f5f5f5, #eee);
+      background-image:         linear-gradient(top, #f5f5f5, #eee);
+    }
+
+    .zebra th:first-child {
+      -moz-border-radius: 6px 0 0 0;
+      -webkit-border-radius: 6px 0 0 0;
+      border-radius: 6px 0 0 0;
+    }
+
+    .zebra th:last-child {
+      -moz-border-radius: 0 6px 0 0;
+      -webkit-border-radius: 0 6px 0 0;
+      border-radius: 0 6px 0 0;
+    }
+
+    .zebra th:only-child{
+      -moz-border-radius: 6px 6px 0 0;
+      -webkit-border-radius: 6px 6px 0 0;
+      border-radius: 6px 6px 0 0;
+    }
+
+    .zebra tfoot td {
+      border-bottom: 0;
+      border-top: 1px solid #fff;
+      background-color: #f1f1f1;
+    }
+
+    .zebra tfoot td:first-child {
+      -moz-border-radius: 0 0 0 6px;
+      -webkit-border-radius: 0 0 0 6px;
+      border-radius: 0 0 0 6px;
+    }
+
+    .zebra tfoot td:last-child {
+      -moz-border-radius: 0 0 6px 0;
+      -webkit-border-radius: 0 0 6px 0;
+      border-radius: 0 0 6px 0;
+    }
+
+    .zebra tfoot td:only-child{
+      -moz-border-radius: 0 0 6px 6px;
+      -webkit-border-radius: 0 0 6px 6px
+      border-radius: 0 0 6px 6px
+    }
+
+
+
+    html, body {
+      font-family: 'Roboto', 'Helvetica', sans-serif;
+      background-color: #f5f5f5;
+    }
+    a {
+      text-decoration: none;
+    }
+    li a {
+      text-decoration: underline;
+      color: #0288d1;
+    }
+    .mdl-card {
+      overflow: visible;
+    }
+    .grecaptcha-logo {
+      background-color: white;
+    }
+    .mdl-grid {
+      max-width: 1024px;
+      margin: auto;
+    }
+    .mdl-layout__header-row {
+      padding: 0;
+    }
+    .quickstart-user-details-container, .user-details-container {
+      margin-top: 20px;
+      line-height: 25px;
+    }
+    #quickstart-sign-in-status, #sign-in-status {
+      font-weight: bold;
+    }
+    pre {
+      overflow-x: scroll;
+      line-height: 18px;
+    }
+    code {
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    #recaptcha-container {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    #sign-in-card {
+      z-index: 2;
+    }
+
+    /* 横向滚动 */
+    .container-wrap {
+      width: 100%;
+      /*height: 50px;*/
+      white-space: nowrap;
+      overflow: hidden;
+      overflow-x: scroll;
+      -webkit-backface-visibility: hidden;
+      -webkit-perspective: 1000;
+      -webkit-overflow-scrolling: touch;
+      text-align: justify;
+    &::-webkit-scrollbar {
+       display: none;
+     }
+    }
+
+  </style>
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+  <script>
+      // Initialize Firebase
+      var config = {
+          apiKey: "AIzaSyBRD34SiFdaP3vdKxWSVdsfh8IBf7yhVFo",
+          authDomain: "point-scredit.firebaseapp.com",
+          databaseURL: "https://point-scredit.firebaseio.com",
+          projectId: "point-scredit",
+          storageBucket: "point-scredit.appspot.com",
+          messagingSenderId: "899264812373"
+      };
+      firebase.initializeApp(config);
+
+  </script>
+
+  <!-- Material Design Theming -->
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+  <script type="text/javascript">
+
+    function showData() {
+        deleteData();
+        var database = firebase.database();
+        var userId = firebase.auth().currentUser.uid;
+        console.log(userId);
+        show_loading();
+        firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+            var is_admin = (snapshot.val() && snapshot.val().is_admin) || 'false';
+//            alert(is_admin)
+            if (is_admin)
+            {
+                firebase.database().ref('/users').once('value').then(function(snapshot) {
+
+                    hide_loading();
+                    var table1_data = [];
+                    var table1_headers = ["#", "账户", "余款"];
+                    var data = snapshot.val();
+                    var index = 1;
+                    var index1 = 1;
+
+                    var table2_headers = ["#", "账户", "余款", "时间", "交易金额"];
+                    var table2_data = [];
+
+                    var admin_total_balance = 0
+                    var user_total_balance = 0
+                    for (var user_key in data) {
+                        var user = data[user_key];
+                        var dic = new Array();
+                        dic["index"] = index + '';
+                        dic["email"] = user["email"];
+                        var transactions = user["transactions"];
+                        var balance = get_balance(transactions, user_key) + '';
+                        dic["balance"] = balance;
+                        table1_data.push(dic);
+
+                        for (var tran_key in transactions) {
+                            var tran = transactions[tran_key];
+                            var dic1 = new Array();
+                            dic1["index"] = index1 + '';
+                            dic1["email"] = user["email"];
+                            dic1["balance"] = balance;
+                            dic1["time"] = new Date(parseInt(tran["happenedAt"]) * 1000);
+                            var first = "";
+                            if (tran["from"] == user_key) {
+                                var first = "-";
+                            }
+                            dic1["amount"] = first + parseFloat(tran["amount"] + '').toFixed(2) + '';
+                            table2_data.push(dic1);
+                            index1++;
+                        }
+                        index++;
+
+                        if (user_key == userId) {
+                            admin_total_balance = balance
+                        } else {
+                            user_total_balance += parseInt(balance)
+                        }
+                    }
+                    create_h(document.createElement("h4"), "总数:" + user_total_balance + "     " + "管理员:" + admin_total_balance);
+                    creat_br();
+                    create_h(document.createElement("h6"), "用户余额");
+                    createTable(table1_headers, table1_data);
+                    creat_br();
+
+
+                    // 数组排序
+                    table2_data.sort(function(a, b){
+//                        console.log(a["time"])
+                        if (a["time"] == "Invalid Date") {
+                            return 1;
+                        }
+                        if (b["time"] == "Invalid Date") {
+                            return 0;
+                        }
+                        return a["time"] < b["time"] ? 1 : -1;
+                    });
+                    for (var i = 0; i < table2_data.length; i++) {
+                        var dic = table2_data[i];
+                        dic["index"] = (i + 1) + '';
+                        var d = dic["time"];
+                        var time = (d.getFullYear()) + "-" +
+                            (d.getMonth() + 1) + "-" +
+                            (d.getDate()) + " " +
+                            (d.getHours()) + ":" +
+                            (d.getMinutes()) + ":" +
+                            (d.getSeconds());
+                        dic["time"] = time.indexOf("NaN") ? time : "无记录";
+                    }
+
+                    create_h(document.createElement("h6"), "交易记录");
+                    createTable(table2_headers, table2_data);
+                });
+            } else {
+                hide_loading();
+                alert('You are not an administrator, you have no access.')
+            }
+
+            // ...
+        });
+    }
+
+    function create_h(h, text) {
+        document.getElementById("test").appendChild(h);
+        h.textContent = text;
+        h.style = "text-align:center";
+    }
+
+    function creat_br() {
+        var br = document.createElement("br");
+        document.getElementById("test").appendChild(br);
+    }
+
+    function createTable(headres,datas) {
+
+        //创建表格
+        var table = document.createElement("table");
+        table.className = 'zebra';
+        //创建表头
+        var thead = document.createElement("thead");
+        //将标题追加到table中
+        table.appendChild(thead);
+        //创建tr
+        var tr = document.createElement("tr");
+        //将tr追加到thead中
+        thead.appendChild(tr);
+        //遍历headers中的数据
+        for(var i =0;i<headres.length;i++){
+            //创建th
+            var th = document.createElement("th");
+            //将th追加到thead中的tr中
+            tr.appendChild(th);
+            th.innerHTML= headres[i];
+        }
+        //创建tbodt
+        createTbody(table,datas);
+        document.getElementById("test").appendChild(table);
+    }
+
+    function createTbody(table,datas) {
+        //创建tbody
+        var tbody = document.createElement("tbody");
+        //将tbody追加到table中
+        table.appendChild(tbody);
+        //遍历得到数据源
+        for(var i=0;i < datas.length; i++){
+            //获取没想数据
+            var data =datas[i];
+            //创建tr
+            tr = document.createElement("tr");
+            //将tr追加到tbody中
+            tbody.appendChild(tr);
+            //遍历对象的属性
+            var index = 0;
+            for(var key in data){
+                //创建td
+                var td = document.createElement("td");
+                //追加到tbody中的tr中
+                tr.appendChild(td);
+                td.innerHTML = data[key];
+                index++;
+            }
+        }
+    }
+
+    /* 删除test所有子节点 */
+    function deleteData() {
+        var el = document.getElementById('test');
+        el.innerHTML="";
+//        for (var i=0;i<el.childNodes.length;i++){
+//            var childNode = el.childNodes[0]; //总是删除第一个，是不是更简单
+//            el.removeChild(childNode);
+//        }
+    }
+
+    function get_balance(transactions, uid) {
+
+        var result = 0.00;
+        if (!transactions && typeof(transactions)!="undefined" && transactions!=0)
+        {
+            return result;
+        }
+        for (var tran_key in transactions) {
+            var tran = transactions[tran_key];
+            var r = parseFloat(tran['amount']);
+            if (tran['to'] == uid) {
+//                parseFloat(tran["amount"] + '').toFixed(2)
+                result = result + r;
+            } else {
+                result = result - r;
+            }
+        }
+        return result.toFixed(2);
+    }
+
+    /**
+     * Handles the sign in button press.
+     */
+    function toggleSignIn() {
+      if (firebase.auth().currentUser) {
+          showData();
+
+      } else {
+
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+        if (email.length < 4) {
+          alert('Please enter an email address.');
+          return;
+        }
+        if (password.length < 4) {
+          alert('Please enter a password.');
+          return;
+        }
+        // Sign in with email and pass.
+        show_loading();
+        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+            hide_loading();
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // [START_EXCLUDE]
+          if (errorCode === 'auth/wrong-password') {
+            alert('Wrong password.');
+            return;
+          } else {
+            alert(errorMessage);
+            return;
+          }
+          console.log(error);
+          showData();
+        });
+      }
+    }
+
+    /**
+     * initApp handles setting up UI event listeners and registering Firebase auth listeners:
+     *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
+     *    out, and that is where we update the UI.
+     */
+    function initApp() {
+
+      document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
+        setTimeout("check_login()", 1000)
+    }
+
+    function check_login() {
+        if (firebase.auth().currentUser) {
+            showData();
+        } else {
+            alert("please login in")
+        }
+    }
+
+    function hide_loading(){
+        //获取div节点对象，通过div的id
+        var divNode = document.getElementById("quickstart-sign-in");
+        //隐藏div
+        divNode.textContent = "Look up";
+        document.getElementById('quickstart-sign-in').disabled = false;
+    }
+    function show_loading(){
+        //获取div节点对象
+        var divNode = document.getElementById("quickstart-sign-in");
+        //显示div
+        divNode.textContent = "loading......";
+        document.getElementById('quickstart-sign-in').disabled = true;
+    }
+
+    window.onload = function() {
+      initApp();
+    };
+  </script>
+</head>
+<body>
+
+<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+  <main class="mdl-layout__content mdl-color--grey-100">
+    <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+
+      <!-- Container for the demo -->
+      <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+
+        <div class="mdl-card__supporting-text mdl-color-text--grey-600" >
+
+          <div id=loading" style="position:fixed;top:40%;left:45%;z-index:999;display: none">loading......</div>
+          <p>Enter an email and password below and sign in to an existing account</p>
+
+          <input class="mdl-textfield__input" style="display:inline;width:auto;" type="text" id="email" name="email" placeholder="Email"/>
+          &nbsp;&nbsp;&nbsp;
+          <input class="mdl-textfield__input" style="display:inline;width:auto;" type="password" id="password" name="password" placeholder="Password"/>
+          <br/><br/>
+          <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in" name="sign in">Look up</button>
+
+          <div class="container-wrap" id="test">
+
+          </div>
+
+          </div>
+        </div>
+      </div>
+
+  </main>
+</div>
+
+
+</body>
+</html>
